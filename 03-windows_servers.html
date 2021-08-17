@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta name="application-name" content="netdata">
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta property="og:locale" content="en_US" />
+    <title>Server Status</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+    <script>
+        // this section has to appear before loading dashboard.js
+        var netdataTheme = 'slate'; // this is dark
+    </script>
+
+    <script type="text/javascript" src="http://ubuntu_netdata_server_ip:19999/dashboard.js?v20210101"></script>
+    <script>
+        // Set options for TV operation
+        // This has to be done, after dashboard.js is loaded
+
+        // destroy charts not shown (lowers memory on the browser)
+        NETDATA.options.current.destroy_on_hide = false;
+
+        // set this to false, to always show all dimensions
+        NETDATA.options.current.eliminate_zero_dimensions = true;
+
+        // lower the pressure on this browser
+        NETDATA.options.current.concurrent_refreshes = false;
+
+        // if the tv browser is too slow (a pi?)
+        // set this to false
+        NETDATA.options.current.parallel_refresher = true;
+
+        // always update the charts, even if focus is lost
+        NETDATA.options.current.stop_updates_when_focus_is_lost = false;
+
+        // Since you may render charts from many servers and any of them may
+        // become offline for some time, the charts will break.
+        // This will reload the page every RELOAD_EVERY n minutes
+        var RELOAD_EVERY = 10;
+        setTimeout(function () {
+            location.reload();
+        }, RELOAD_EVERY * 60 * 1000);
+    </script>
+
+    <style>
+        .cerceve {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            
+        }
+
+        .gaugeChartTitle {
+            top: auto !important;
+            bottom: -10px !important;
+        }
+
+        .gaugeChartLabel {
+            color: #00ff00;
+        }
+
+        .gaugeChartUnits {
+            left: -10px !important;
+            bottom: 11% !important;
+        }
+
+        .netdata-chart {
+            overflow: visible;
+        }
+
+        .netdata-container-gauge {
+            overflow: visible;
+        }
+
+        .dygraph-title {
+            text-indent: 35px;
+        }
+    </style>
+</head>
+
+<body class="vh-100">
+    <div class="container-fluid ">
+        <div class="col-12 pt-2 cerceve">
+            <!--First Row-->
+            <div class="row">
+              <!--First Windows Server-->
+                <div class="col rounded-lg d-flex justify-content-center align-items-center m-1 py-2" style="border: 1px solid #3f474e; display: inline-block !important; " >
+
+                <div class="row">
+                    <h4 class="mb-0" id="menu_cgroup_wmi_win1_server.cpu_utilization_total" role="heading" style="margin-left: 2%;">First Windows Server</h4>
+                </div>
+
+                <div class="row" style="align-items: flex-end;">
+                    <!--Cpu-->
+                    <div data-netdata="wmi_win1_server.cpu_utilization_total" data-title="CPU USE" data-chart-library="gauge" 
+                    data-units="%" data-host="http://ubuntu_netdata_server_ip:19999" data-after="-600" data-points="600"
+                     data-gauge-max-value="100" data-width="33%"  style="margin-bottom: 3%; margin-left: 15%"></div>
+
+                    <!--Ram-->
+                    <div data-netdata="wmi_win1_server.memory_utilization" data-title="USED RAM"  data-chart-library="gauge"  data-units="" data-host="http://ubuntu_netdata_server_ip:19999" data-after="-600" data-points="600"
+                    data-append-options="percentage" data-dimensions="used|buffers|active|wired"  data-gauge-max-value="100" data-colors="red"
+                    data-width="33%"  style="margin-bottom: 3%;" >
+                    </div>
+
+                </div>
+
+               <div class="row">
+                <!--Disk İo Input-->
+                <div class="netdata-container-easypiechart" data-netdata="wmi_win1_server.logical_disk_C__bandwidth" data-dimensions="read" data-host="http://ubuntu_netdata_server_ip:19999" style="margin-left:10% ;"
+                    data-chart-library="easypiechart" data-title="Disk Read" data-width="20%" data-after="-600" data-points="600" data-common-units="system.io.mainhead" role="application">
+                </div>
+                
+                <!--Disk İo Output-->
+                <div class="netdata-container-easypiechart" data-netdata="wmi_win1_server.logical_disk_C__bandwidth" data-dimensions="write" data-host="http://ubuntu_netdata_server_ip:19999"
+                    data-chart-library="easypiechart" data-title="Disk Write" data-width="20%" data-after="-600" data-points="600" data-common-units="system.io.mainhead" role="application">
+                </div>
+
+                <!--Net Input-->
+                <div data-netdata="wmi_win1_server.nic_Intel_R_82574L_Gigabit_Network_Connection_bandwidth" data-dimensions="received" data-chart-library="easypiechart" data-host="http://ubuntu_netdata_server_ip:19999"
+                data-title="Total traffic In -Physical Int" data-width="20%" data-after="-600" data-points="600" data-units="kilobits/s" ></div>
+
+                <!--Net Output-->
+                <div data-netdata="wmi_win1_server.nic_Intel_R_82574L_Gigabit_Network_Connection_bandwidth" data-dimensions="sent" data-chart-library="easypiechart" data-host="http://ubuntu_netdata_server_ip:19999"
+                    data-title="Total traffic Out -Physical Int" data-width="20%" data-after="-600" data-points="60" data-units="kilobits/s" ></div>
+                </div>
+                
+
+                <div class="row">
+                    
+                    <div data-netdata="wmi_win1_server.nic_Intel_R_82574L_Gigabit_Network_Connection_bandwidth"  data-chart-library="dygraph" data-dygraph-theme="sparkline" data-host="http://ubuntu_netdata_server_ip:19999" 
+                    data-legend="no" data-width="100%" data-height="70" data-after="-600" data-points="600"></div>
+                </div>
+
+
+                <div class="row">
+
+                    <div id="chart_system_ram" data-netdata="wmi_win1_server.memory_utilization"  data-legend="no" data-after="-600" data-points="600" data-host="http://ubuntu_netdata_server_ip:19999/" data-title="Ram"
+                    data-width="50%" data-height="70px" data-dygraph-valuerange="[null, null]" data-id="monitor_system_ram" data-colors="" data-decimal-digits="-1" 
+                    role="application" style="height: 70px; width: 100%;"></div>
+
+                    <div id="chart_disk_space._" data-netdata="wmi_win1_server.logical_disk_C:_utilization"  data-legend="no" data-after="-600" data-points="600" data-host="http://ubuntu_netdata_server_ip:19999/" data-title="Disk"
+                    data-width="50%" data-height="70px" data-dygraph-valuerange="[null, null]" data-id="monitor_system_ram" data-colors="" data-decimal-digits="-1" 
+                    role="application" style="height: 70px; width: 100%;"></div>
+
+                </div>
+
+
+
+
+                </div>
+              <!--Second Windows Server-->
+              <div class="col rounded-lg d-flex justify-content-center align-items-center m-1 py-2" style="border: 1px solid #3f474e; display: inline-block !important; " >
+
+                <div class="row">
+                    <h4 class="mb-0" id="menu_cgroup_wmi_win2_server.cpu_utilization_total" role="heading" style="margin-left: 2%;">Second Windows Server</h4>
+                </div>
+
+                <div class="row" style="align-items: flex-end;">
+                    <!--Cpu-->
+                    <div data-netdata="wmi_win2_server.cpu_utilization_total" data-title="CPU USE" data-chart-library="gauge" 
+                    data-units="%" data-host="http://ubuntu_netdata_server_ip:19999" data-after="-600" data-points="600"
+                     data-gauge-max-value="100" data-width="33%"  style="margin-bottom: 3%; margin-left: 15%"></div>
+
+                    <!--Ram-->
+                    <div data-netdata="wmi_win2_server.memory_utilization" data-title="USED RAM"  data-chart-library="gauge"  data-units="" data-host="http://ubuntu_netdata_server_ip:19999" data-after="-600" data-points="600"
+                    data-append-options="percentage" data-dimensions="used|buffers|active|wired"  data-gauge-max-value="100" data-colors="red"
+                    data-width="33%"  style="margin-bottom: 3%;" >
+                    </div>
+
+                </div> 
+                
+                <div class="row">
+                <!--Disk İo Input-->
+                <div class="netdata-container-easypiechart" data-netdata="wmi_win2_server.logical_disk_C__bandwidth" data-dimensions="read" data-host="http://ubuntu_netdata_server_ip:19999" style="margin-left:10% ;"
+                    data-chart-library="easypiechart" data-title="Disk Read" data-width="20%" data-after="-600" data-points="600" data-common-units="system.io.mainhead" role="application">
+                </div>
+                
+                <!--Disk İo Output-->
+                <div class="netdata-container-easypiechart" data-netdata="wmi_win2_server.logical_disk_C__bandwidth" data-dimensions="write" data-host="http://ubuntu_netdata_server_ip:19999"
+                    data-chart-library="easypiechart" data-title="Disk Write" data-width="20%" data-after="-600" data-points="600" data-common-units="system.io.mainhead" role="application">
+                </div>
+
+                <!--Net Input-->
+                <div data-netdata="wmi_win2_server.nic_Intel_R_82574L_Gigabit_Network_Connection_bandwidth" data-dimensions="received" data-chart-library="easypiechart" data-host="http://ubuntu_netdata_server_ip:19999"
+                data-title="Total traffic In -Physical Int" data-width="20%" data-after="-600" data-points="600" data-units="kilobits/s" ></div>
+
+                <!--Net Output-->
+                <div data-netdata="wmi_win2_server.nic_Intel_R_82574L_Gigabit_Network_Connection_bandwidth" data-dimensions="sent" data-chart-library="easypiechart" data-host="http://ubuntu_netdata_server_ip:19999"
+                    data-title="Total traffic Out -Physical Int" data-width="20%" data-after="-600" data-points="60" data-units="kilobits/s" ></div>
+                </div>
+                
+
+                <div class="row">
+                    
+                    <div data-netdata="wmi_win2_server.nic_Intel_R_82574L_Gigabit_Network_Connection_bandwidth"  data-chart-library="dygraph" data-dygraph-theme="sparkline" data-host="http://ubuntu_netdata_server_ip:19999" 
+                    data-legend="no" data-width="100%" data-height="70" data-after="-600" data-points="600"></div>
+                </div>
+
+
+                <div class="row">
+
+                    <div id="chart_system_ram" data-netdata="wmi_win2_server.memory_utilization"  data-legend="no" data-after="-600" data-points="600" data-host="http://ubuntu_netdata_server_ip:19999/" data-title="Ram"
+                    data-width="50%" data-height="70px" data-dygraph-valuerange="[null, null]" data-id="monitor_system_ram" data-colors="" data-decimal-digits="-1" 
+                    role="application" style="height: 70px; width: 100%;"></div>
+
+                    <div id="chart_disk_space._" data-netdata="wmi_win2_server.logical_disk_C:_utilization"  data-legend="no" data-after="-600" data-points="600" data-host="http://ubuntu_netdata_server_ip:19999/" data-title="Disk"
+                    data-width="50%" data-height="70px" data-dygraph-valuerange="[null, null]" data-id="monitor_system_ram" data-colors="" data-decimal-digits="-1" 
+                    role="application" style="height: 70px; width: 100%;"></div>
+
+                </div>
+
+
+
+
+                </div>
+     
+            </div>
+
+        
+ 
+        </div>
+    </div>
+
+    
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script>
+        var Change_screen_Min = 5;
+        setInterval(function() {
+            window.location.href = "01-Docker_Server.html"
+        },  Change_screen_Min * 60 * 1000)
+</script>
+</body>
+
+</html>

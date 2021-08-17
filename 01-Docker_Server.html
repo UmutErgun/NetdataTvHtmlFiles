@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta name="application-name" content="netdata">
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta property="og:locale" content="en_US" />
+    <title>Server Status</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+    <script>
+        // this section has to appear before loading dashboard.js
+        var netdataTheme = 'slate'; // this is dark
+    </script>
+
+    <script type="text/javascript" src="http://ubuntu_netdata_server_ip:19999/dashboard.js?v20210101"></script>
+    <script>
+        // Set options for TV operation
+        // This has to be done, after dashboard.js is loaded
+
+        // destroy charts not shown (lowers memory on the browser)
+        NETDATA.options.current.destroy_on_hide = false;
+
+        // set this to false, to always show all dimensions
+        NETDATA.options.current.eliminate_zero_dimensions = true;
+
+        // lower the pressure on this browser
+        NETDATA.options.current.concurrent_refreshes = false;
+
+        // if the tv browser is too slow (a pi?)
+        // set this to false
+        NETDATA.options.current.parallel_refresher = true;
+
+        // always update the charts, even if focus is lost
+        NETDATA.options.current.stop_updates_when_focus_is_lost = false;
+
+        // Since you may render charts from many servers and any of them may
+        // become offline for some time, the charts will break.
+        // This will reload the page every RELOAD_EVERY n minutes
+        var RELOAD_EVERY = 10;
+        setTimeout(function () {
+            location.reload();
+        }, RELOAD_EVERY * 60 * 1000);
+    </script>
+
+    <style>
+        .cerceve {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            
+        }
+
+        .gaugeChartTitle {
+            top: auto !important;
+            bottom: -10px !important;
+        }
+
+        .gaugeChartLabel {
+            color: #00ff00;
+        }
+
+        .gaugeChartUnits {
+            left: -10px !important;
+            bottom: 11% !important;
+        }
+
+        .netdata-chart {
+            overflow: visible;
+        }
+
+        .netdata-container-gauge {
+            overflow: visible;
+        }
+
+        .dygraph-title {
+            text-indent: 35px;
+        }
+    </style>
+</head>
+
+<body class="vh-100">
+    <div class="container-fluid ">
+        <div class="col-12 pt-2 cerceve">
+            <div class="row">
+                <div class="col rounded-lg w-100 m-1 py-2" style="border: 1px solid #3f474e;">
+                    <h3 class="mb-0" id="menu_cgroup_6f8d19038852" role="heading">Another Docker Server</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col rounded-lg d-flex justify-content-center align-items-center m-1 py-2" style="border: 1px solid #3f474e; display: block !important; " >
+
+                    <div class="netdata-container-easypiechart" data-netdata="system.io" data-dimensions="in" data-host="http://another_docker_server_ip:19999"
+                        data-chart-library="easypiechart" data-title="Disk Read" data-width="30%" data-after="-600" data-points="600" data-common-units="system.io.mainhead" role="application" style="margin-left: 15%;">
+                    </div>
+
+                    <div class="netdata-container-easypiechart" data-netdata="system.io" data-dimensions="out" data-host="http://another_docker_server_ip:19999"
+                        data-chart-library="easypiechart" data-title="Disk Write" data-width="30%" data-after="-600" data-points="600" data-common-units="system.io.mainhead" role="application">
+                    </div>
+                    
+                    <div class="netdata-container-with-legend netdata-container-with-legend--bottom" id="chart_disk_space__var_lib" data-netdata="disk_space._var" data-host="http://another_docker_server_ip:19999/"
+                        data-width="100%" data-height="100px" data-dygraph-valuerange="[null, null]" data-legend-position="bottom"
+                        data-after="-600" data-points="600" data-id="docker_disk_space__var" data-colors="" data-decimal-digits="-1"
+                        role="application" style="width: 100%; height: 100px; will-change: transform;">
+                    </div>
+            
+            </div>
+
+            <!--CPU Ram-->
+                <div
+                    class="col rounded-lg d-flex justify-content-center align-items-center m-1 py-2" style="border: 1px solid #3f474e; display: block !important; ">
+
+                    <div data-netdata="system.ram" data-title="USED RAM"  data-chart-library="gauge"  data-units="%" data-host="http://another_docker_server_ip:19999"
+                        data-append-options="percentage" data-dimensions="used|buffers|active|wired" data-after="-600" data-points="600"
+                        data-gauge-max-value="100" data-width="35%" data-gauge-generate-gradient="[0, 50, 100]"
+                        data-gauge-gradient-percent-color-0="#2081d0" data-gauge-gradient-percent-color-50="#1c78b0"
+                        data-gauge-gradient-percent-color-100="#2081d0" style="margin-left: 15%;">
+                    </div>
+
+                    <div data-netdata="system.cpu" data-title="CPU USE" data-chart-library="gauge" data-units="%" data-host="http://another_docker_server_ip:19999"
+                        data-gauge-max-value="100" data-width="35%" data-after="-600" data-points="600"
+                        data-gauge-generate-gradient="[0, 50, 100]" data-gauge-gradient-percent-color-0="#1c78b0"
+                        data-gauge-gradient-percent-color-50="#2081d0" data-gauge-gradient-percent-color-100="#1c78b0"
+                        style="margin-left: 15px;">
+                    </div>
+
+                    <div class="netdata-container-with-legend" id="chart_system_ram" data-netdata="system.ram" data-host="http://another_docker_server_ip:19999"
+                        data-width="100%" data-height="100px" data-dygraph-valuerange="[null, null]" data-after="-600" data-points="600"
+                        data-id="docker_system_ram" data-colors="" data-decimal-digits="-1"
+                        role="application" style="width: 100%; height: 100px; will-change: transform;">
+                    </div>
+
+                    <div class="netdata-container-with-legend" id="chart_system_cpu" data-netdata="system.cpu" data-host="http://another_docker_server_ip:19999"
+                        data-width="100%" data-height="100px" data-dygraph-valuerange="[0, 100]" data-after="-600" data-points="600" 
+                        data-id="docker_system_cpu" data-colors="" data-decimal-digits="-1"
+                        role="application" style="width: 100%; height: 100px; will-change: transform;"></div>
+
+
+
+                </div>
+
+                <!--Traffic-->
+                <div
+                    class="col rounded-lg d-flex justify-content-center align-items-center m-1 py-2" style="border: 1px solid #3f474e; display: block !important; ">
+                    <div data-netdata="system.net" data-dimensions="received" data-chart-library="easypiechart" data-host="http://another_docker_server_ip:19999"
+                        data-title="Total traffic In -Physical Int" data-width="30%" data-after="-600" data-points="600"
+                        data-units="kilobits/s">
+                    </div>
+
+                    <div data-netdata="system.net" data-dimensions="sent" data-chart-library="easypiechart" data-host="http://another_docker_server_ip:19999"
+                        data-title="Total traffic Out -Physical Int" data-width="30%" data-after="-600" data-points="600"
+                        data-units="kilobits/s">
+                    </div>
+
+                    <div data-netdata="netdata.requests" data-host="http://another_docker_server_ip:19999" data-units=""
+                    data-title="Requests/s" data-chart-library="gauge" data-decimal-digits="0" data-common-max="top-gauges"
+                    data-width="33%" data-after="-600" data-points="600" data-colors="#AA5555" style="margin-bottom: 5%;"></div>
+
+
+
+                    <div class="netdata-container-with-legend" id="chart_system_net" data-netdata="system.net" data-host="http://another_docker_server_ip:19999"
+                    data-width="100%" data-height="100px" data-dygraph-valuerange="[null, null]" data-after="-600" data-points="600"
+                     data-id="docker_system_net" data-colors="" data-decimal-digits="-1"
+                    role="application" style="width: 100%; height: 100px;"></div>
+
+
+
+
+
+                </div>
+            </div>
+ 
+            <div class="row">
+
+
+                <div class="col rounded-lg w-80 m-1 py-2" style="border: 1px solid #3f474e"> 
+                    <!--  Container Cpu Useage -->
+                    <h4 class="mb-0" id="menu_cgroup_Container_1" role="heading">Container_1</h4>
+                    <div data-netdata="cgroup_Container_1.cpu" data-chart-library="gauge" data-title="CPU" data-host="http://another_docker_server_ip:19999"
+                        data-units="%" data-gauge-adjust="width" data-width="45%" data-height="1px" data-after="-600" data-points="600"
+                        data-colors="#0099C6" role="application" 
+                        class="netdata-container-gauge" data-gauge-max-value="100" data-gauge-generate-gradient="[0, 50, 100]" data-gauge-gradient-percent-color-0="#1c78b0"
+                        data-gauge-gradient-percent-color-50="#2081d0" data-gauge-gradient-percent-color-100="#1c78b0" >
+                    </div>
+
+                    <!--  Container Ram Useage -->
+
+                    <div data-netdata="cgroup_Container_1.mem_usage" data-chart-library="gauge" data-title="Memory" data-host="http://another_docker_server_ip:19999"
+                        data-units="MB" data-gauge-adjust="width" data-width="45%" data-before="0" data-after="-600"
+                        data-points="600" data-colors="#FE3912" role="application" data-gauge-max-value="600"
+                        class="netdata-container-gauge" style="margin-left: 5%;"></div>
+
+                   
+                </div>
+                <div class="col rounded-lg w-100 m-1 py-2" style="border: 1px solid #3f474e">
+                    <h4 class="mb-0" id="menu_cgroup_Container_2" role="heading">Container_2</h4>
+                    <div data-netdata="cgroup_Container_2.cpu" data-chart-library="gauge" data-title="CPU" data-host="http://another_docker_server_ip:19999"
+                        data-units="%" data-gauge-adjust="width" data-width="45%" data-after="-600" 
+                        data-points="600" data-colors="#0099C6" role="application"
+                        class="netdata-container-gauge" data-gauge-max-value="100" data-gauge-generate-gradient="[0, 50, 100]" data-gauge-gradient-percent-color-0="#1c78b0"
+                        data-gauge-gradient-percent-color-50="#2081d0" data-gauge-gradient-percent-color-100="#1c78b0"></div>
+
+                    <div data-netdata="cgroup_Container_2.mem_usage" data-chart-library="gauge" data-title="Memory" data-host="http://another_docker_server_ip:19999"
+                        data-units="MB" data-gauge-adjust="width" data-width="45%" data-after="-600" data-points="600"
+                          data-colors="#FE3912" role="application" data-gauge-max-value="600"
+                        class="netdata-container-gauge" style="margin-left: 5%;"></div>
+
+                   
+                </div>
+                <div class="col rounded-lg w-100 m-1 py-2" style="border: 1px solid #3f474e">
+                    <h4 class="mb-0" id="menu_cgroup_Container_3" role="heading">Container_3</h4>
+                    <div data-netdata="cgroup_Container_3.cpu" data-chart-library="gauge" data-title="CPU" data-host="http://another_docker_server_ip:19999"
+                        data-units="%" data-gauge-adjust="width" data-width="45%" data-after="-600"
+                        data-points="600" data-colors="#0099C6" role="application"
+                        class="netdata-container-gauge" data-gauge-max-value="100" data-gauge-generate-gradient="[0, 50, 100]" data-gauge-gradient-percent-color-0="#1c78b0"
+                        data-gauge-gradient-percent-color-50="#2081d0" data-gauge-gradient-percent-color-100="#1c78b0"></div>
+
+                    <div data-netdata="cgroup_Container_3.mem_usage" data-chart-library="gauge" data-title="Memory" data-host="http://another_docker_server_ip:19999"
+                        data-units="MB" data-gauge-adjust="width" data-width="45%" data-before="0" data-after="-600"
+                        data-points="600" data-colors="#FE3912" role="application" data-gauge-max-value="600"
+                        class="netdata-container-gauge" style="margin-left: 5%;"></div>
+
+                   
+                </div>
+
+                <div class="col rounded-lg w-100 m-1 py-2" style="border: 1px solid #3f474e">
+                    <h4 class="mb-0" id="menu_cgroup_Container_4" role="heading">Container_4</h4>
+                    <div data-netdata="cgroup_Container_4.cpu" data-chart-library="gauge" data-title="CPU" data-host="http://another_docker_server_ip:19999"
+                        data-units="%" data-gauge-adjust="width" data-width="45%"  data-after="-600"
+                        data-points="600" data-colors="#0099C6" role="application"
+                        class="netdata-container-gauge" data-gauge-max-value="100" data-gauge-generate-gradient="[0, 50, 100]" data-gauge-gradient-percent-color-0="#1c78b0"
+                        data-gauge-gradient-percent-color-50="#2081d0" data-gauge-gradient-percent-color-100="#1c78b0"></div>
+
+                    <div data-netdata="cgroup_Container_4.mem_usage" data-chart-library="gauge" data-title="Memory" data-host="http://another_docker_server_ip:19999"
+                        data-units="MB" data-gauge-adjust="width" data-width="45%" data-before="0" data-after="-600"
+                        data-points="600" data-colors="#FE3912" role="application" data-gauge-max-value="600"
+                        class="netdata-container-gauge" style="margin-left: 5%;"></div>
+                        
+                </div>
+
+                <div class="col rounded-lg w-100 m-1 py-2" style="border: 1px solid #3f474e">
+                    <h4 class="mb-0" id="menu_cgroup_Container_5" role="heading">Container_5</h4>
+                    <div data-netdata="cgroup_Container_5.cpu" data-chart-library="gauge" data-title="CPU" data-host="http://another_docker_server_ip:19999"
+                        data-units="%" data-gauge-adjust="width" data-width="45%" data-before="0" data-after="-600"
+                        data-points="600" data-colors="#0099C6" role="application"
+                        class="netdata-container-gauge" data-gauge-max-value="100" data-gauge-generate-gradient="[0, 50, 100]" data-gauge-gradient-percent-color-0="#1c78b0"
+                        data-gauge-gradient-percent-color-50="#2081d0" data-gauge-gradient-percent-color-100="#1c78b0"></div>
+
+                    <div data-netdata="cgroup_Container_5.mem_usage" data-chart-library="gauge" data-title="Memory" data-host="http://another_docker_server_ip:19999"
+                        data-units="MB" data-gauge-adjust="width" data-width="45%" data-before="0" data-after="-600"
+                        data-points="600" data-colors="#FE3912" role="application" data-gauge-max-value="600"
+                        class="netdata-container-gauge" style="margin-left: 5%;"></div>
+                  
+                </div>
+
+
+            </div>
+           
+
+        </div>
+    </div>
+
+    
+
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script>
+        var Change_screen_Min = 5;
+        setInterval(function() {
+            window.location.href = "02-Linux_Server.html"
+        },  Change_screen_Min * 60 * 1000)
+</script>
+</body>
+
+</html>
